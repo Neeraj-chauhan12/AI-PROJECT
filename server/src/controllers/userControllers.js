@@ -1,4 +1,5 @@
 const User = require("../models/userModel");
+const client = require("../utils/GoogleAuth");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 //register controller
@@ -28,6 +29,80 @@ exports.registerUser = async (req, res) => {
     });
   }
 };
+
+
+//google login controller
+export const googleLogin = async (req, res) => {
+  try {
+
+    const { credential } = req.body;
+
+    if (!credential) {
+      return res.status(400).json({
+        success: false,
+        message: "Google token missing"
+      });
+    }
+
+    const ticket = await client.verifyIdToken({
+      idToken: credential,
+      audience: process.env.GOOGLE_CLIENT_ID,
+    });
+
+    const payload = ticket.getPayload();
+
+    const {
+      sub,
+      email,
+      name,
+      picture,
+    } = payload;
+
+    let user = await User.findOne({ email });
+
+    if (!user) {
+
+      user = await User.create({
+        name,
+        email,
+        googleId: sub,
+        picture,
+        provider: "google",
+      });
+
+    }
+
+    const token = jwt.sign(
+      {
+        id: user._id,
+      },
+      process.env.JWT_SECRET,
+      {
+        expiresIn: "7d",
+      }
+    );
+
+    res.cookie("token", token, {
+      httpOnly: true,
+      secure: false,
+    });
+
+    res.status(200).json({
+      success: true,
+      user,
+      token,
+    });
+
+  } catch (error) {
+
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+
+  }
+};
+
 
 //login controllers
 exports.LoginUser = async (req, res) => {
