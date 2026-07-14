@@ -1,6 +1,25 @@
 import React from 'react'
 
-const Home = () => {
+
+const features = [
+  {
+    title: "Fast onboarding",
+    description:
+      "Start your journey in seconds with a clean and simple experience.",
+  },
+  {
+    title: "Smart dashboard",
+    description:
+      "Stay productive with a beautiful workspace designed for modern teams.",
+  },
+  {
+    title: "Secure access",
+    description:
+      "Enjoy trusted sign-in options and a polished authentication flow.",
+  },
+];
+
+const Home = ({ name, onLogout }) => {
   return (
     <div className="min-h-screen bg-[radial-gradient(circle_at_top_left,_rgba(168,85,247,0.3),_transparent_35%),linear-gradient(135deg,_#020617_0%,_#111827_45%,_#312e81_100%)] px-4 py-6 text-slate-100 sm:px-6 lg:px-8">
       <div className="mx-auto flex max-w-6xl flex-col gap-6">
