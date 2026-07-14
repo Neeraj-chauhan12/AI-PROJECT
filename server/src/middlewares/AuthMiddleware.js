@@ -10,7 +10,7 @@ exports.authMiddleware = (req, res, next) => {
         });
     }
 
-    const decode= jwt.verify(token, process.env.JWT_SECRET_KEY);
+    const decode= jwt.verify(token, process.env.JWT_SECRET);
     req.user = decode;
     next();
         

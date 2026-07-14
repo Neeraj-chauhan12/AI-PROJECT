@@ -2,6 +2,8 @@ const User = require("../models/userModel");
 const client = require("../utils/GoogleAuth");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+
+
 //register controller
 exports.registerUser = async (req, res) => {
   try {
@@ -32,7 +34,7 @@ exports.registerUser = async (req, res) => {
 
 
 //google login controller
-export const googleLogin = async (req, res) => {
+exports.googleLogin = async (req, res) => {
   try {
 
     const { credential } = req.body;
@@ -46,7 +48,7 @@ export const googleLogin = async (req, res) => {
 
     const ticket = await client.verifyIdToken({
       idToken: credential,
-      audience: process.env.GOOGLE_CLIENT_ID,
+      audience: process.env.CLIENT_ID,
     });
 
     const payload = ticket.getPayload();
@@ -128,7 +130,7 @@ exports.LoginUser = async (req, res) => {
     //generate token
     const token = jwt.sign(
       { email: existUser.email },
-      process.env.JWT_SECRET_KEY,
+      process.env.JWT_SECRET,
     );
     res.cookie("token", token, {
       httpOnly: true,
