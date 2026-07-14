@@ -1,4 +1,5 @@
 import React from 'react'
+import { useState } from 'react'
 
 const Login = () => {
 
@@ -7,7 +8,8 @@ const Login = () => {
       const [formData, setFormData] = useState({ name: '', email: '', password: '' })
       const [message, setMessage] = useState('')
     
-      const googleClientId = import.meta.env.VITE_GOOGLE_CLIENT_ID
+      const googleClientId = import.meta.env.CLIENT_ID
+      console.log('Google Client ID:', googleClientId) // Log the Google Client ID to verify it's being read correctly
 
       const handleSubmit = (event) => {
     event.preventDefault()
