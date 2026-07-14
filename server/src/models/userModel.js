@@ -14,7 +14,19 @@ const userSchema= new mongoose.Schema({
     password:{
         required:true,
         type:String
-    }
+    },
+    googleId: {
+    type: String,
+},
+
+picture: {
+    type: String,
+},
+
+provider: {
+    type: String,
+    default: "local",
+},
 })
 
 module.exports= mongoose.model("User",userSchema);
